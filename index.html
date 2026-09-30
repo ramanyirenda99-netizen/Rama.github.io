@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>NEXA Wave Demo</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display",Arial,sans-serif;background:#070611;color:#fff;min-height:100vh}
+.app{max-width:520px;margin:auto;min-height:100vh;background:radial-gradient(circle at 80% 0%,#30206b 0,#11102b 28%,#070611 65%);padding-bottom:92px}
+header{height:72px;display:flex;align-items:center;justify-content:space-between;padding:0 18px;position:sticky;top:0;z-index:4;background:rgba(7,6,17,.72);backdrop-filter:blur(18px)}
+.logo{font-size:25px;font-weight:900;letter-spacing:1px;background:linear-gradient(90deg,#a855f7,#38bdf8);-webkit-background-clip:text;color:transparent}
+.opt{border:1px solid #ffffff20;background:#ffffff0d;border-radius:14px;padding:10px 13px;color:#fff}
+.tabs{display:flex;gap:9px;overflow:auto;padding:4px 16px 14px}.tabs span{white-space:nowrap;padding:9px 14px;border-radius:20px;background:#ffffff0b;color:#aaa;font-size:13px}.tabs .on{background:linear-gradient(90deg,#7c3aed,#2563eb);color:#fff}
+.card{margin:10px 14px;border:1px solid #ffffff14;background:linear-gradient(145deg,#15132b,#0d0c1b);border-radius:25px;overflow:hidden;box-shadow:0 15px 45px #0007}
+.posthead{display:flex;align-items:center;gap:10px;padding:16px}.avatar{width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,#9333ea,#22d3ee);display:grid;place-items:center;font-weight:800}.name{font-weight:750}.time{font-size:11px;color:#888}
+.hero{height:290px;background:linear-gradient(135deg,#20104b,#182e66 45%,#080b19);display:grid;place-items:center;position:relative}.orb{width:145px;height:145px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#b879ff,#4c36d9 42%,#12134e 72%);box-shadow:0 0 70px #6d4affaa}.hero:after{content:"NEXA WAVE";position:absolute;bottom:18px;left:18px;font-size:12px;letter-spacing:3px;color:#ffffff99}
+.caption{padding:15px 17px;color:#ddd;line-height:1.45}.actions{display:flex;gap:22px;padding:0 17px 16px}.actions button{background:none;border:0;color:#fff;font-size:22px;padding:0}.actions .liked{color:#ff4d88}.plane{transform:rotate(-10deg)}
+.wave{margin:15px 14px;padding:17px;border:1px solid #ffffff15;background:#ffffff08;border-radius:22px}.wave h2{margin:0 0 5px;font-size:19px}.wave p{margin:0 0 14px;color:#999;font-size:13px}.choices{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}.choices button{border:1px solid #ffffff12;background:#ffffff09;color:#fff;border-radius:16px;padding:14px 5px;font-size:12px}.choices b{display:block;font-size:20px;margin-bottom:5px}.result{display:none;margin-top:12px;padding:13px;border-radius:15px;background:linear-gradient(90deg,#24135a,#102b5a);font-size:13px}.dock{position:fixed;bottom:10px;left:50%;transform:translateX(-50%);width:min(490px,calc(100% - 20px));padding:9px;background:#0e0d19df;border:1px solid #ffffff18;border-radius:24px;display:flex;justify-content:space-around;backdrop-filter:blur(20px);z-index:8}.dock button{background:none;border:0;color:#aaa;font-size:11px}.dock b{display:block;font-size:20px;color:#fff;margin-bottom:2px}.dock .active{color:#9b7cff}.dock .active b{color:#a855f7}
+</style>
+</head>
+<body>
+<div class="app">
+<header><button class="opt" onclick="alert('Options: Modes • Settings • Privacy • NEXA Vault')">☰ Options</button><div class="logo">NEXA</div><div>◉</div></header>
+<div class="tabs"><span class="on">For You</span><span>Following</span><span>Explore</span><span>Wave</span></div>
+<div class="card">
+<div class="posthead"><div class="avatar">R</div><div><div class="name">NEXA Creator</div><div class="time">Just now</div></div></div>
+<div class="hero"><div class="orb"></div></div>
+<div class="caption"><b>Try NEXA Wave.</b><br>Move this post anywhere inside NEXA — AI, Search, Create, Message, Social or your Vault.</div>
+<div class="actions"><button id="heart" onclick="like()">♡</button><button onclick="alert('Comments opened 🎙️ Voice comments are supported in this prototype.')">◯</button><button class="plane" onclick="showWave()">➤</button></div>
+</div>
+<div class="wave" id="wave">
+<h2>〽️ NEXA Wave</h2><p>Where do you want to send this?</p>
+<div class="choices">
+<button onclick="pick('AI Mode','✨')"><b>✨</b>AI</button>
+<button onclick="pick('Search','⌕')"><b>⌕</b>Search</button>
+<button onclick="pick('Vault','▣')"><b>▣</b>Save</button>
+<button onclick="pick('Create Mode','✦')"><b>✦</b>Create</button>
+<button onclick="pick('Message Mode','✉')"><b>✉</b>Message</button>
+<button onclick="pick('Social','◎')"><b>◎</b>Social</button>
+</div><div class="result" id="result"></div>
+</div>
+<div class="dock">
+<button class="active"><b>⌂</b>Home</button><button><b>G</b>Google</button><button><b>◎</b>Instagram</button><button><b>◉</b>WhatsApp</button><button onclick="showWave()" class="active"><b>〽</b>Wave</button>
+</div>
+</div>
+<script>
+let hue=0;
+function like(){const h=document.getElementById('heart');h.classList.toggle('liked');h.textContent=h.classList.contains('liked')?'♥':'♡';}
+function showWave(){document.getElementById('wave').scrollIntoView({behavior:'smooth',block:'center'});}
+function pick(name,icon){const r=document.getElementById('result');r.style.display='block';r.innerHTML=icon+' <b>Sent to '+name+'</b><br><span style="color:#aaa">NEXA Wave connected this content to '+name+'.</span>';document.body.style.filter='hue-rotate('+(++hue*7)+'deg)';setTimeout(()=>document.body.style.filter='',500);}
+</script>
+</body></html>
